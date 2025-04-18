@@ -22,19 +22,20 @@ jobs:
         with:
           node-version: '16'
 
-      # Шаг 3: Устанавливаем зависимости с кешированием
+      # Шаг 3: Кешируем зависимости (обновлено для использования actions/cache@v3)
       - name: Cache Node.js modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
+      # Шаг 4: Устанавливаем зависимости
       - name: Install dependencies
         run: npm install
 
-      # Шаг 4: Запускаем бота
+      # Шаг 5: Запускаем бота
       - name: Run bot
         run: node your-app.js
         env:
