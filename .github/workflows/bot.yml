@@ -1,0 +1,35 @@
+name: Telegram Bot Workflow
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 * * * *' # Это будет запускать workflow каждый час
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Шаг 1: Получаем код из репозитория
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Шаг 2: Устанавливаем Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      # Шаг 3: Устанавливаем зависимости
+      - name: Install dependencies
+        run: npm install
+
+      # Шаг 4: Запускаем бота
+      - name: Run bot
+        run: node your-app.js
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
