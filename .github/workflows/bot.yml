@@ -5,7 +5,7 @@ on:
     branches:
       - master
   schedule:
-    - cron: '0 * * * *' # Это будет запускать workflow каждый час
+    - cron: '0 * * * *'  # Запускать workflow каждый час
 
 jobs:
   build:
@@ -22,7 +22,15 @@ jobs:
         with:
           node-version: '16'
 
-      # Шаг 3: Устанавливаем зависимости
+      # Шаг 3: Устанавливаем зависимости с кешированием
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
         run: npm install
 
